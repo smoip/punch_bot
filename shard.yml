@@ -1,0 +1,9 @@
+name: punch_bot
+version: 0.1.0
+
+authors:
+  - David Roberts <droberts@livewatch.com>
+
+crystal: 0.24.1
+
+license: MIT
