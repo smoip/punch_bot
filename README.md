@@ -1,6 +1,6 @@
 # punch_bot
 
-TODO: Write a description here
+let's learn crystal with punching robots
 
 ## Installation
 
@@ -18,19 +18,18 @@ dependencies:
 require "punch_bot"
 ```
 
-TODO: Write usage instructions here
+...and then do some stuff?
 
-## Development
+<!-- ## Development -->
 
-TODO: Write development instructions here
 
-## Contributing
+<!-- ## Contributing -->
 
-1. Fork it ( https://github.com/smoip/punch_bot/fork )
-2. Create your feature branch (git checkout -b my-new-feature)
-3. Commit your changes (git commit -am 'Add some feature')
-4. Push to the branch (git push origin my-new-feature)
-5. Create a new Pull Request
+<!-- 1. Fork it ( https://github.com/smoip/punch_bot/fork ) -->
+<!-- 2. Create your feature branch (git checkout -b my-new-feature) -->
+<!-- 3. Commit your changes (git commit -am 'Add some feature') -->
+<!-- 4. Push to the branch (git push origin my-new-feature) -->
+<!-- 5. Create a new Pull Request -->
 
 ## Contributors
 
