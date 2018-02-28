@@ -1,5 +1,10 @@
+# add teams
+# all bots are on teams
+# bots choose a random opponent from another team to attack
+# fight ends when only members of one team are left
+
 class PunchingPlace
-  # this is punching place
+  # this is a punching place
   # it's a place to punch
 
   def initialize(punchers : Array(Puncher))
@@ -10,10 +15,10 @@ class PunchingPlace
     while all_still_up?
       @punchers.first.punch(@punchers.last)
       @punchers.last.punch(@punchers.first)
+      p ""
     end
     p "Knock out!"
-    p "First HP: #{@punchers.first.hit_points}, First Exp: #{@punchers.first.experience}"
-    p "Second HP: #{@punchers.last.hit_points}, Second Exp: #{@punchers.last.experience}"
+    @punchers.each { |puncher| puncher.report_status }
   end
 
   private def all_still_up?

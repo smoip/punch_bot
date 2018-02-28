@@ -1,33 +1,53 @@
+require "../namer"
+# add levels
+# variable attack power
+# variable defense power
+
+# when you take damage - you get 1 experience
+# when you do damage - you get experience based on the level of the bot you damaged
+
+# add bot name generator
 class Puncher
   # this is a puncher
   # it punches
   # it can get punched
 
-  @hit_points : Int32
+  @@level_base : Int32 = 5
+  @max_hit_points : Int32
+  @current_hit_points : Int32
+  @level : Int32
+  @name : String
 
-  getter :name, :experience, :knocked_out
+  getter :name, :experience, :level, :knocked_out
   property :hit_points
 
-  def initialize(name : String)
-    @name = name
-    @hit_points = determine_hitpoints
+  def initialize()
+    @name = Namer.generate_name
+    @max_hit_points = determine_hitpoints
+    @current_hit_points = @max_hit_points
     @experience = 0
+    @level = 0
+    @attack = 1
+    @defense = 1
     @knocked_out = false
   end
 
   def punch(target : Puncher)
     return if target == self
-    report_status("#{@name} punched #{target.name}")
-    target.get_punched(1)
-    gain_experience
-    report_status("#{@name} gained 1 experience")
+    return miss(target.name) unless hit?
+    report_message("#{@name} punched #{target.name}")
+    target.get_punched(min_amount_for(@level))
+    gain_experience(min_amount_for(target.level))
+  end
+
+  def miss(target_name : String)
+    report_message("#{@name} missed #{target_name}")
   end
 
   def get_punched(punch_damage : Int32)
-    @hit_points -= punch_damage
-    report_status("#{@name} lost 1 hit points")
-    gain_experience
-    report_status("#{@name} gained 1 experience")
+    @current_hit_points -= punch_damage
+    report_message("#{@name} lost #{punch_damage} hit points")
+    gain_experience(1)
     check_status
   end
 
@@ -35,20 +55,51 @@ class Puncher
     !@knocked_out
   end
 
+  def report_status
+    report_message("#{@name}: Level #{@level}, Exp. #{@experience}, HP #{@current_hit_points}/#{@max_hit_points}")
+  end
+
   private def determine_hitpoints
     Random.rand(8) + 2
   end
 
-  private def gain_experience
-    @experience += 1
+  private def min_amount_for(level)
+    [level, 1].max
+  end
+
+  private def hit?
+    rand > 0.5
+  end
+
+  private def gain_experience(points)
+    @experience += points
+    report_message("#{@name} gained #{points} experience")
+    update_level
   end
 
   private def check_status
-    return if @hit_points > 0
+    return if @current_hit_points > 0
     @knocked_out = true
   end
 
-  private def report_status(message : String)
+  private def report_message(message : String)
     p message
+  end
+
+  private def update_level
+    initial_level = @level
+    @level = calculate_level
+    if @level > initial_level
+      report_message("#{@name} leveled up to #{@level}!")
+      improve_attrs
+    end
+  end
+
+  private def improve_attrs
+    @max_hit_points += determine_hitpoints
+  end
+
+  private def calculate_level
+    Int32.new(LibM.log_f64(@experience) / LibM.log_f64(@@level_base))
   end
 end
